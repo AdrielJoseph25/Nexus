@@ -1,4 +1,4 @@
-[Uploading README.md…]()
+
 # Nexus: Distributed Microservices E-Commerce Platform
 
 Nexus is a full-stack, event-driven e-commerce platform built with **Java 17**, **Spring Boot**, **Spring Cloud Gateway**, **PostgreSQL**, **Apache Kafka**, and a dark-themed frontend dashboard. The project demonstrates how modern commerce systems can split order, inventory, and payment logic into independent microservices while maintaining consistency through a choreography-based Saga Pattern.
