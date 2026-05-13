@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nexus Commerce Console</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark">N</span>
+            <div>
+                <strong>Nexus</strong>
+                <small>Commerce Console</small>
+            </div>
+        </div>
+        <nav>
+            <a href="#dashboard" class="active">Dashboard</a>
+            <a href="#orders">Orders</a>
+            <a href="#inventory">Inventory</a>
+            <a href="#payments">Payments</a>
+        </nav>
+        <div class="system-card">
+            <span>Gateway</span>
+            <strong id="gatewayStatus">Checking</strong>
+        </div>
+    </aside>
+
+    <main>
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Distributed Saga Backend</p>
+                <h1>Order, inventory, and payment operations in one dark control surface.</h1>
+            </div>
+            <button id="refreshButton" type="button">Refresh</button>
+        </header>
+
+        <section class="stats-grid" id="dashboard">
+            <article class="stat">
+                <span>Total Orders</span>
+                <strong id="orderCount">0</strong>
+            </article>
+            <article class="stat">
+                <span>Confirmed</span>
+                <strong id="confirmedCount">0</strong>
+            </article>
+            <article class="stat">
+                <span>Reserved Stock</span>
+                <strong id="reservedCount">0</strong>
+            </article>
+            <article class="stat">
+                <span>Payments</span>
+                <strong id="paymentCount">0</strong>
+            </article>
+        </section>
+
+        <section class="workspace">
+            <form class="panel order-form" id="orderForm">
+                <div class="panel-title">
+                    <div>
+                        <p class="eyebrow">Create Order</p>
+                        <h2>Start a Kafka saga</h2>
+                    </div>
+                    <span class="status-pill">Async</span>
+                </div>
+                <label>
+                    Customer ID
+                    <input name="customerId" value="cust-1001" required>
+                </label>
+                <label>
+                    SKU
+                    <select name="sku">
+                        <option>NX-LAPTOP-17</option>
+                        <option>NX-HEADSET-PRO</option>
+                        <option>NX-DOCK-4K</option>
+                    </select>
+                </label>
+                <div class="two-col">
+                    <label>
+                        Quantity
+                        <input name="quantity" type="number" min="1" value="1" required>
+                    </label>
+                    <label>
+                        Amount
+                        <input name="amount" type="number" min="1" step="0.01" value="1299.00" required>
+                    </label>
+                </div>
+                <div class="button-row">
+                    <button type="submit">Create Order</button>
+                    <button class="secondary" type="button" id="rollbackDemo">Rollback Demo</button>
+                </div>
+                <p id="formMessage" class="message"></p>
+            </form>
+
+            <section class="panel timeline-panel">
+                <div class="panel-title">
+                    <div>
+                        <p class="eyebrow">Saga Flow</p>
+                        <h2>Choreography path</h2>
+                    </div>
+                </div>
+                <ol class="timeline">
+                    <li><strong>Order Created</strong><span>Order service publishes `order.created`.</span></li>
+                    <li><strong>Inventory Reserved</strong><span>Inventory service reserves stock.</span></li>
+                    <li><strong>Payment Completed</strong><span>Payment service confirms or fails authorization.</span></li>
+                    <li><strong>Rollback</strong><span>Failure cancels the order and releases stock.</span></li>
+                </ol>
+            </section>
+        </section>
+
+        <section class="tables">
+            <article class="panel" id="orders">
+                <div class="panel-title">
+                    <div>
+                        <p class="eyebrow">Orders</p>
+                        <h2>Current saga state</h2>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                        <tr><th>Order</th><th>Customer</th><th>SKU</th><th>Qty</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="ordersBody"></tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="panel" id="inventory">
+                <div class="panel-title">
+                    <div>
+                        <p class="eyebrow">Inventory</p>
+                        <h2>Stock positions</h2>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                        <tr><th>SKU</th><th>Available</th><th>Reserved</th></tr>
+                        </thead>
+                        <tbody id="inventoryBody"></tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="panel" id="payments">
+                <div class="panel-title">
+                    <div>
+                        <p class="eyebrow">Payments</p>
+                        <h2>Authorization results</h2>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                        <tr><th>Payment</th><th>Order</th><th>Amount</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="paymentsBody"></tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+    </main>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>
